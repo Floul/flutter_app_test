@@ -1,78 +1,62 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
+/* */
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MaterialApp(
+    title: "My first Flutter App",
+    home: ChangeBackground(),
+  ));
+}
 
-class MyApp extends StatelessWidget {
+class ChangeBackground extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Timer'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CustomTextContainer(label: 'HRS'),
-                  CustomTextContainer(label: 'MIN'),
-                  CustomTextContainer(label: 'SEC'),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: RaisedButton(
-                  child: Text('START'),
-                  onPressed: () {
-
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  State<StatefulWidget> createState() {
+    return _ChangeBackgroundState();
   }
 }
 
-class CustomTextContainer extends StatelessWidget {
-
-  CustomTextContainer({this.label});
-
-  final String label;
+class _ChangeBackgroundState extends State<ChangeBackground> {
+  Color color = Colors.yellow;
+  String yourMessage = '  ';
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5),
-      padding: EdgeInsets.all(20),
-      decoration: new BoxDecoration(
-        borderRadius: new BorderRadius.circular(10),
-        color: Colors.black87,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            '00',
-            style: TextStyle(
+    return Scaffold(
+      appBar: AppBar(title: Text("My first Flutter app")),
+      body: new InkWell(
+        onTap: () {
+          setState(() {
+            color = Color((math.Random().nextDouble() * 0xFFFFFF).toInt() << 0)
+                .withOpacity(1.0);
+          });
+        },
+        child: Container(
+            color: color,
+            child: Container(
               color: Colors.white,
-              fontSize: 54,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            '$label',
-            style: TextStyle(
-              color: Colors.white70,
-            ),
-          )
-        ],
+              margin: EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TextField(
+                      decoration: new InputDecoration.collapsed(
+                          hintText: 'Enter your message'
+                      ),
+                      textAlign: TextAlign.center,
+                      onSubmitted: (String userInput) {
+                        setState(() {
+                          yourMessage = userInput;
+                        });
+                      },
+                    ),
+                  ),
+
+                ],
+              ),
+            )),
       ),
     );
   }
